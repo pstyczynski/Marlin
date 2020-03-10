@@ -859,6 +859,11 @@ void lcd_quick_feedback(const bool clear_buttons) {
     void lcd_sdcard_stop() {
       wait_for_heatup = wait_for_user = false;
       abort_sd_printing = true;
+      
+      #if ENABLED(ADVANCED_STOP_FEATURE)
+         enqueue_and_echo_commands_P(PSTR(ADVANCED_STOP_CUSTOM_SCRIPT));
+      #endif
+
       lcd_setstatusPGM(PSTR(MSG_PRINT_ABORTED), -1);
       lcd_return_to_status();
     }
