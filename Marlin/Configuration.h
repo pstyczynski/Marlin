@@ -77,7 +77,7 @@
 #define STRING_CONFIG_H_AUTHOR "(1138-4EB, Geeetech Prusa i3 Pro B config)" // Who made the changes.
 #define SHOW_BOOTSCREEN
 #define STRING_SPLASH_LINE1 SHORT_BUILD_VERSION // will be shown during bootup in line 1
-#define STRING_SPLASH_LINE2 "BUILD 12.03.2020"         // will be shown during bootup in line 2
+#define STRING_SPLASH_LINE2 "BUILD 13.03.2020"         // will be shown during bootup in line 2
 
 /**
  * *** VENDORS PLEASE READ ***

@@ -11997,6 +11997,13 @@ inline void gcode_M907() {
   }
 #endif // HAS_CASE_LIGHT
 
+bool extruder_light_on;
+
+void update_extruder_light() {
+  SET_OUTPUT(EXTRUDER_LIGHT_PIN);
+  WRITE(EXTRUDER_LIGHT_PIN, extruder_light_on ? HIGH : LOW);
+}
+
 /**
  * M355: Turn case light on/off and set brightness
  *
@@ -15130,6 +15137,9 @@ void setup() {
     case_light_brightness = CASE_LIGHT_DEFAULT_BRIGHTNESS;
     update_case_light();
   #endif
+
+  extruder_light_on = true;
+  update_extruder_light();
 
   #if ENABLED(SPINDLE_LASER_ENABLE)
     OUT_WRITE(SPINDLE_LASER_ENABLE_PIN, !SPINDLE_LASER_ENABLE_INVERT);  // init spindle to off
