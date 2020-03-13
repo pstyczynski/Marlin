@@ -39,7 +39,7 @@
 // Limit Switches
 //
 #define X_MIN_PIN          22
-#define X_MAX_PIN          24
+#define X_MAX_PIN          -1
 #define Y_MIN_PIN          26
 #define Y_MAX_PIN          28
 #define Z_MIN_PIN          30
@@ -94,6 +94,7 @@
 #define PS_ON_PIN          12
 #define SUICIDE_PIN        54   // Must be enabled at startup to keep power flowing
 #define KILL_PIN           -1
+#define CASE_LIGHT_PIN     24
 
 #if ENABLED(ULTRA_LCD)
 
