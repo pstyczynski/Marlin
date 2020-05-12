@@ -1147,7 +1147,7 @@ void lcd_quick_feedback(const bool clear_buttons) {
 
     extern bool extruder_light_on;
     extern void update_extruder_light();
-    MENU_ITEM_EDIT_CALLBACK(bool,  _UxGT("Extruder light"), (bool*)&extruder_light_on, update_extruder_light);
+    //MENU_ITEM_EDIT_CALLBACK(bool,  _UxGT("Extruder light"), (bool*)&extruder_light_on, update_extruder_light);
 
 
     #if ENABLED(LCD_INFO_MENU)
