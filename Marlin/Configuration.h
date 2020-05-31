@@ -77,7 +77,7 @@
 #define STRING_CONFIG_H_AUTHOR "(Geeetech Prusa i3 Pro B by Husky)" // Who made the changes.
 #define SHOW_BOOTSCREEN
 #define STRING_SPLASH_LINE1 SHORT_BUILD_VERSION // will be shown during bootup in line 1
-#define STRING_SPLASH_LINE2 "BUILD 12.05.2020"         // will be shown during bootup in line 2
+#define STRING_SPLASH_LINE2 "BUILD 18.05.2020"         // will be shown during bootup in line 2
 
 /**
  * *** VENDORS PLEASE READ ***
@@ -786,13 +786,13 @@
  */
 #define X_PROBE_OFFSET_FROM_EXTRUDER 23  // X offset: -left  +right  [of the nozzle]
 #define Y_PROBE_OFFSET_FROM_EXTRUDER -42  // Y offset: -front +behind [the nozzle]
-#define Z_PROBE_OFFSET_FROM_EXTRUDER 0   // Z offset: -below +above  [the nozzle]
+#define Z_PROBE_OFFSET_FROM_EXTRUDER -3.4   // Z offset: -below +above  [the nozzle]
 
 // Certain types of probes need to stay away from edges
-#define MIN_PROBE_EDGE 45
+#define MIN_PROBE_EDGE 0
 
 // X and Y axis travel speed (mm/m) between probes
-#define XY_PROBE_SPEED 8000
+#define XY_PROBE_SPEED 4000
 
 // Feedrate (mm/m) for the first approach when double-probing (MULTIPLE_PROBING == 2)
 #define Z_PROBE_SPEED_FAST (20*60)
@@ -1032,13 +1032,13 @@
   #define GRID_MAX_POINTS_Y GRID_MAX_POINTS_X
 
   // Set the boundaries for probing (where the probe can reach).
-  //#define LEFT_PROBE_BED_POSITION 10
-  //#define RIGHT_PROBE_BED_POSITION (X_MAX_POS - X_PROBE_OFFSET_FROM_EXTRUDER - 14)
-  //#define FRONT_PROBE_BED_POSITION 15
-  //#define BACK_PROBE_BED_POSITION (Y_MAX_POS + Y_PROBE_OFFSET_FROM_EXTRUDER - 25)
+  #define LEFT_PROBE_BED_POSITION 20
+  #define RIGHT_PROBE_BED_POSITION (X_MAX_POS - X_PROBE_OFFSET_FROM_EXTRUDER + 0)
+  #define FRONT_PROBE_BED_POSITION 15
+  #define BACK_PROBE_BED_POSITION (Y_MAX_POS + Y_PROBE_OFFSET_FROM_EXTRUDER - 13)
 
   // Probe along the Y axis, advancing X after each column
-  //#define PROBE_Y_FIRST
+#define PROBE_Y_FIRST
 
   #if ENABLED(AUTO_BED_LEVELING_BILINEAR)
 
@@ -1095,12 +1095,12 @@
  * Override if the automatically selected points are inadequate.
  */
 #if ENABLED(AUTO_BED_LEVELING_3POINT) || ENABLED(AUTO_BED_LEVELING_UBL)
-  //#define PROBE_PT_1_X 15
-  //#define PROBE_PT_1_Y 180
-  //#define PROBE_PT_2_X 15
-  //#define PROBE_PT_2_Y 20
-  //#define PROBE_PT_3_X 170
-  //#define PROBE_PT_3_Y 20
+  #define PROBE_PT_1_X (X_BED_SIZE / 2)
+  #define PROBE_PT_1_Y 150
+  #define PROBE_PT_2_X 30
+  #define PROBE_PT_2_Y 30
+  #define PROBE_PT_3_X 170
+  #define PROBE_PT_3_Y 30
 #endif
 
 /**
