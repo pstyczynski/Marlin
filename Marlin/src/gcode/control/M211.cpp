@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,6 +20,10 @@
  *
  */
 
+#include "../../inc/MarlinConfigPre.h"
+
+#if HAS_SOFTWARE_ENDSTOPS
+
 #include "../gcode.h"
 #include "../../module/motion.h"
 
@@ -29,21 +33,14 @@
  * Usage: M211 S1 to enable, M211 S0 to disable, M211 alone for report
  */
 void GcodeSuite::M211() {
+  const xyz_pos_t l_soft_min = soft_endstop.min.asLogical(),
+                  l_soft_max = soft_endstop.max.asLogical();
   SERIAL_ECHO_START();
-  #if HAS_SOFTWARE_ENDSTOPS
-    if (parser.seen('S')) soft_endstops_enabled = parser.value_bool();
-    SERIAL_ECHOPGM(MSG_SOFT_ENDSTOPS);
-    serialprintPGM(soft_endstops_enabled ? PSTR(MSG_ON) : PSTR(MSG_OFF));
-  #else
-    SERIAL_ECHOPGM(MSG_SOFT_ENDSTOPS);
-    SERIAL_ECHOPGM(MSG_OFF);
-  #endif
-  SERIAL_ECHOPGM(MSG_SOFT_MIN);
-  SERIAL_ECHOPAIR(    MSG_X, LOGICAL_X_POSITION(soft_endstop_min[X_AXIS]));
-  SERIAL_ECHOPAIR(" " MSG_Y, LOGICAL_Y_POSITION(soft_endstop_min[Y_AXIS]));
-  SERIAL_ECHOPAIR(" " MSG_Z, LOGICAL_Z_POSITION(soft_endstop_min[Z_AXIS]));
-  SERIAL_ECHOPGM(MSG_SOFT_MAX);
-  SERIAL_ECHOPAIR(    MSG_X, LOGICAL_X_POSITION(soft_endstop_max[X_AXIS]));
-  SERIAL_ECHOPAIR(" " MSG_Y, LOGICAL_Y_POSITION(soft_endstop_max[Y_AXIS]));
-  SERIAL_ECHOLNPAIR(" " MSG_Z, LOGICAL_Z_POSITION(soft_endstop_max[Z_AXIS]));
+  SERIAL_ECHOPGM(STR_SOFT_ENDSTOPS);
+  if (parser.seen('S')) soft_endstops_enabled = parser.value_bool();
+  serialprint_onoff(soft_endstops_enabled);
+  print_xyz(l_soft_min, PSTR(STR_SOFT_MIN), PSTR(" "));
+  print_xyz(l_soft_max, PSTR(STR_SOFT_MAX));
 }
+
+#endif

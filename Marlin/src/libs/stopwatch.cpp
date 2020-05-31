@@ -1,9 +1,9 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (C) 2016 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
- * Copyright (C) 2011 Camiel Gubbels / Erik van der Zalm
+ * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,77 +20,77 @@
  *
  */
 
-#include "../Marlin.h"
 #include "stopwatch.h"
 
-Stopwatch::Stopwatch() {
-  this->reset();
-}
+#include "../inc/MarlinConfig.h"
+
+#if ENABLED(EXTENSIBLE_UI)
+  #include "../lcd/extui/ui_api.h"
+#endif
+
+Stopwatch::State Stopwatch::state;
+millis_t Stopwatch::accumulator;
+millis_t Stopwatch::startTimestamp;
+millis_t Stopwatch::stopTimestamp;
 
 bool Stopwatch::stop() {
-  #if ENABLED(DEBUG_STOPWATCH)
-    Stopwatch::debug(PSTR("stop"));
-  #endif
+  Stopwatch::debug(PSTR("stop"));
 
-  if (this->isRunning() || this->isPaused()) {
-    this->state = STOPPED;
-    this->stopTimestamp = millis();
+  if (isRunning() || isPaused()) {
+    TERN_(EXTENSIBLE_UI, ExtUI::onPrintTimerStopped());
+    state = STOPPED;
+    stopTimestamp = millis();
     return true;
   }
   else return false;
 }
 
 bool Stopwatch::pause() {
-  #if ENABLED(DEBUG_STOPWATCH)
-    Stopwatch::debug(PSTR("pause"));
-  #endif
+  Stopwatch::debug(PSTR("pause"));
 
-  if (this->isRunning()) {
-    this->state = PAUSED;
-    this->stopTimestamp = millis();
+  if (isRunning()) {
+    TERN_(EXTENSIBLE_UI, ExtUI::onPrintTimerPaused());
+    state = PAUSED;
+    stopTimestamp = millis();
     return true;
   }
   else return false;
 }
 
 bool Stopwatch::start() {
-  #if ENABLED(DEBUG_STOPWATCH)
-    Stopwatch::debug(PSTR("start"));
-  #endif
+  Stopwatch::debug(PSTR("start"));
 
-  if (!this->isRunning()) {
-    if (this->isPaused()) this->accumulator = this->duration();
-    else this->reset();
+  TERN_(EXTENSIBLE_UI, ExtUI::onPrintTimerStarted());
 
-    this->state = RUNNING;
-    this->startTimestamp = millis();
+  if (!isRunning()) {
+    if (isPaused()) accumulator = duration();
+    else reset();
+
+    state = RUNNING;
+    startTimestamp = millis();
     return true;
   }
   else return false;
 }
 
+void Stopwatch::resume(const millis_t with_time) {
+  Stopwatch::debug(PSTR("resume"));
+
+  reset();
+  if ((accumulator = with_time)) state = RUNNING;
+}
+
 void Stopwatch::reset() {
-  #if ENABLED(DEBUG_STOPWATCH)
-    Stopwatch::debug(PSTR("reset"));
-  #endif
+  Stopwatch::debug(PSTR("reset"));
 
-  this->state = STOPPED;
-  this->startTimestamp = 0;
-  this->stopTimestamp = 0;
-  this->accumulator = 0;
-}
-
-bool Stopwatch::isRunning() {
-  return (this->state == RUNNING) ? true : false;
-}
-
-bool Stopwatch::isPaused() {
-  return (this->state == PAUSED) ? true : false;
+  state = STOPPED;
+  startTimestamp = 0;
+  stopTimestamp = 0;
+  accumulator = 0;
 }
 
 millis_t Stopwatch::duration() {
-  return (((this->isRunning()) ? millis() : this->stopTimestamp)
-          - this->startTimestamp) / 1000UL + this->accumulator;
+  return accumulator + MS_TO_SEC((isRunning() ? millis() : stopTimestamp) - startTimestamp);
 }
 
 #if ENABLED(DEBUG_STOPWATCH)
