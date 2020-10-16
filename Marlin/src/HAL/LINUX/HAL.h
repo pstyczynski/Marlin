@@ -16,7 +16,7 @@
  * GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  */
 #pragma once
@@ -56,14 +56,12 @@ uint8_t _getc();
 #include "../shared/HAL_SPI.h"
 #include "fastio.h"
 #include "watchdog.h"
-#include "timers.h"
 #include "serial.h"
 
 #define SHARED_SERVOS HAS_SERVOS
 
 extern HalSerial usb_serial;
 #define MYSERIAL0 usb_serial
-#define NUM_SERIAL 1
 
 #define ST7920_DELAY_1 DELAY_NS(600)
 #define ST7920_DELAY_2 DELAY_NS(750)
@@ -87,9 +85,10 @@ int freeMemory();
 #pragma GCC diagnostic pop
 
 // ADC
+#define HAL_ADC_VREF           5.0
+#define HAL_ADC_RESOLUTION    10
 #define HAL_ANALOG_SELECT(ch) HAL_adc_enable_channel(ch)
 #define HAL_START_ADC(ch)     HAL_adc_start_conversion(ch)
-#define HAL_ADC_RESOLUTION    10
 #define HAL_READ_ADC()        HAL_adc_get_result()
 #define HAL_ADC_READY()       true
 
@@ -101,6 +100,8 @@ uint16_t HAL_adc_get_result();
 // Reset source
 inline void HAL_clear_reset_source(void) {}
 inline uint8_t HAL_get_reset_source(void) { return RST_POWER_ON; }
+
+inline void HAL_reboot() {}  // reboot the board or restart the bootloader
 
 /* ---------------- Delay in cycles */
 FORCE_INLINE static void DELAY_CYCLES(uint64_t x) {
