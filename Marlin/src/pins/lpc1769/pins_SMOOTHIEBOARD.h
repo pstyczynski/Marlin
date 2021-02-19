@@ -124,10 +124,10 @@
    */
   #define SD_DETECT_PIN                    P0_27  // EXP2 Pin 7 (SD_CD, SD_DET)
 
-  #define MISO_PIN                         P0_08  // EXP2 Pin 1 (PB3, SD_MISO)
-  #define SCK_PIN                          P0_07  // EXP2 Pin 2 (SD_SCK)
-  #define SS_PIN                           P0_28  // EXP2 Pin 4 (SD_CSEL, SD_CS)
-  #define MOSI_PIN                         P0_09  // EXP2 Pin 6 (PB2, SD_MOSI)
+  #define SD_MISO_PIN                      P0_08  // EXP2 Pin 1 (PB3, SD_MISO)
+  #define SD_SCK_PIN                       P0_07  // EXP2 Pin 2 (SD_SCK)
+  #define SD_SS_PIN                        P0_28  // EXP2 Pin 4 (SD_CSEL, SD_CS)
+  #define SD_MOSI_PIN                      P0_09  // EXP2 Pin 6 (PB2, SD_MOSI)
 
   /**
    * The Smoothieboard supports the REPRAP_DISCOUNT_FULL_GRAPHIC_SMART_CONTROLLER with either
@@ -169,7 +169,7 @@
  * Set from 0 - 127 with stop bit.
  * (Ex. 3F << 1 | 1)
  */
-#define DIGIPOTS_I2C_SCL                   P0_0
+#define DIGIPOTS_I2C_SCL                   P0_00
 #define DIGIPOTS_I2C_SDA_X                 P0_04
 #define DIGIPOTS_I2C_SDA_Y                 P0_10
 #define DIGIPOTS_I2C_SDA_Z                 P0_19
